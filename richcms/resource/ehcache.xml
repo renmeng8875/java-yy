@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache name="richcms">
+
+   <diskStore path="java.io.tmpdir"/>
+
+   <defaultCache
+	   maxElementsInMemory="2000"
+	   eternal="false"
+	   timeToIdleSeconds="3600"
+	   timeToLiveSeconds="3600"
+	   overflowToDisk="true">
+   </defaultCache>
+
+   <cache 
+	   name="jsonCache"
+	   maxElementsInMemory="500"
+	   eternal="false"
+	   timeToIdleSeconds="3600"
+	   timeToLiveSeconds="3600"
+	   overflowToDisk="true"
+	   statistics="true">
+   </cache>
+   
+    <cache name="org.hibernate.cache.StandardQueryCache"
+		maxElementsInMemory="5000" 
+		eternal="false" 
+		timeToIdleSeconds="120"
+		timeToLiveSeconds="120" 
+		overflowToDisk="false" >
+	</cache>
+	
+	<cache name="org.hibernate.cache.UpdateTimestampsCache"
+		   maxElementsInMemory="5000" 
+		   eternal="true" 
+		   overflowToDisk="false" >	
+    </cache>
+</ehcache>

@@ -1,0 +1,31 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+
+<htmlized>
+
+    <description>htmlized main</description>
+
+    <config>
+        <description>htmlized config</description>
+        <thread core="5" max="10"/>
+        <path>/data/webapps/{parentArtifactId}.web.yy.com/sign/static/</path>
+        <domain>http://localhost:8092/</domain>
+        <timeout>10000</timeout>
+    </config>
+
+
+	<!--<schedule delay="1" period="10" stop="false" name="PHourRank">
+		<description>Discovery</description>
+		<do from="${parentArtifactId}/discovery/getDiscoveryJson.action" to="mobile/html/discovery/discovery.json"
+			name="discovery" description="discovery json file" segment="true" />
+	</schedule>
+
+	<schedule delay="0" period="60" stop="false" name="AllTieba">
+		<description>All Tieba</description>
+		<do from="${parentArtifactId}/listAllTieba.action" to="pc/generation/allTieba.gen"
+			name="allTieba" description="all ${parentArtifactId} json file" segment="true" />
+	</schedule>-->
+
+</htmlized>

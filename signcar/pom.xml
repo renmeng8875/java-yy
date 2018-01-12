@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>platform</artifactId>
+        <groupId>com.yy.ent</groupId>
+        <version>1.0.2-SNAPSHOT</version>
+    </parent>
+    <packaging>pom</packaging>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.yy.ent.platform</groupId>
+    <artifactId>signcar</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <repositories>
+       <repository>
+        <id>public</id>
+        <name>YYEnt Public Repositories</name>
+        <url>http://nexus.yy.com/music/content/groups/public/</url>
+        <releases>
+            <enabled>true</enabled>
+        </releases>
+        <snapshots>
+            <enabled>true</enabled>
+        </snapshots>
+    </repository>
+    </repositories>
+
+    <!-- ?????????????????mvn deploy -->
+     <distributionManagement>
+        <repository>
+            <id>yyent-release</id>
+            <name>yyent-release Repository</name>
+            <url>http://nexus.yy.com/music/content/repositories/yyent-release/</url>
+        </repository>
+        <snapshotRepository>
+            <id>yyent</id>
+            <name>yyent Repository</name>
+            <url>http://nexus.yy.com/music/content/repositories/yyent/</url>
+        </snapshotRepository>
+    </distributionManagement>
+  <modules>
+
+    <module>signcar-repository</module>
+    <module>signcar-service</module>
+    <module>signcar-common</module>
+
+  </modules>
+</project>

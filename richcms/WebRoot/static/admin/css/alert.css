@@ -1,0 +1,85 @@
+#new_mark .alert {
+	overflow: hidden;
+	border: 1px solid #7d0603;
+	width: 636px;
+	position: fixed;
+	_position: absolute;
+	top: 20%;
+	_top : 25%;
+	/**_top: expression(eval(document.documentElement.scrollTop +
+		document.documentElement.clientHeight/ 2-this . offsetHeight/ 2) );
+		*/
+	left: 50%;
+	margin-left: -230px;
+	background: #fff;
+	z-index: 110;
+}
+
+#new_mark .alert .title {
+	height: 33px;
+	border-bottom: 1px solid #7d0603;
+	background: #ccc;
+}
+
+#new_mark .alert .title h2 {
+	width: 80%;
+	float: left;
+	color: #fff;
+	font-size: 16px;
+	text-align: left;
+	line-height: 33px;
+	text-indent: 1em;
+	font-weight: normal;
+}
+
+#new_mark .alert .title span {
+	display: block;
+	float: right;
+	width: 11px;
+	height: 12px;
+	overflow: hidden;
+	margin-top: 10px;
+	margin-right: 10px;
+	cursor: pointer;
+}
+
+#new_mark .alert .cont {
+	width: 635px;
+	padding: 20px 0px 20px 10px;
+	overflow: hidden;
+}
+
+#new_mark .alert .cont p {
+	color: #a20e40;
+	text-align: left;
+	line-height: 22px;
+	font-size: 16px;
+	text-indent: 2em;
+	padding: 10px;
+}
+
+#new_mark .alert .btn {
+	text-align: center;
+	overflow: hidden;
+	padding: 10px 0px 20px;
+}
+
+#new_mark .alert .btn .sure {
+	width: 104px;
+	height: 29px;
+	display: inline-block;
+	background: url(./images/alert_sure.jpg) no-repeat;
+}
+
+#new_mark .alertbg {
+	width: 100%;
+	_background: none;
+	position: fixed;
+	_position: absolute;
+	_height: expression(document.documentElement.scrollHeight);
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	z-index: 100;
+}

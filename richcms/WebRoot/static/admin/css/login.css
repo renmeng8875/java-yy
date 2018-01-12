@@ -1,0 +1,39 @@
+#bg{background-image: url(../images/bg_bg.png);}
+#bg{height: 100%;background-image:url(../images/bg_1020.png);}
+#bg .logo{padding-top: 13%;margin-left: 255px;}
+#bg .logo img{margin-right: 25px;}
+#bg .logo h1{font-size: 30px;color:#fff;height: 45px;}
+#bg .logo p{font-size: 18px;color:#fff;}
+#bg .content{width:515px; height:308px ;margin: 50px 250px 0 255px;background: url(../images/bg_518x308.png) no-repeat;}
+#bg .content .title{height: 43px;}
+#bg .content .title a{height: 43px;line-height:43px;margin-left: 20px;padding-left: 25px;font-size: 18px;color:#fff;background: url(../images/bg_20x28.png) left center no-repeat;}
+#bg .content .login p{margin:5px auto;height: 40px;width:340px;}
+#bg .content .login p.p1{margin-top:25px;}
+#bg .content .login p.p4{height: 30px;}
+#bg .content .login p span.sp1{width: 60px;text-align: right;font-size: 14px;line-height: 30px;margin-right:15px;}
+#bg .content .login .input1{width: 205px;height:32px; padding:0px 10px; line-height:32px;border:none;background: url(../images/bg_225x31x1.png) no-repeat;}
+#bg .content .login .a1,#bg .content .login .a2{ display:block;position:absolute; right:55px; top:8px;}
+#bg .content .login .a2{top:8px;}
+#bg .content .login .input3{width: 75px;height:32px; line-height:32px;border:none;background: url(../images/bg_95x31.png) no-repeat;padding:0 10px;}
+#bg .content .login .input4{margin-right: 15px; margin-top:2px; _margin-top:-2px;}
+#bg .content .login p span.spr1{width:20px;height:32px;background: url(../images/bg_20x64.png) no-repeat;background-position: 0 6px;}
+#bg .content .login p span.spr2{width:20px;height:32px;background: url(../images/bg_20x64.png) no-repeat;background-position: 0 -40px;}
+#bg .content .login .captcha{margin:2px 0 0 15px;}
+#bg .content .login p.p5 .a1{line-height: 40px;margin-left:15px;color: #219b00;font-size: 14px;}
+#bg .content .login p.p5 .a11{line-height:40px;}
+#wraper {width:1020px;margin:0 auto;_overflow:hidden;}
+#bg .content .l-btn{display:block; width:113px;height:39px; background-image:url(../images/bg_113x39.png); border:0;}
+
+
+#bg .content .login li{width:450px;margin: 5px 0 5px 60px;height: 40px;}
+#bg .content .login li.p1 {margin-top: 25px;}
+#bg .content .login li span.sp1 {width: 60px;text-align: right;font-size: 14px;line-height: 30px;margin-right: 15px;}
+#bg .content .login li.p5 .l-btn{margin-left:50px;}
+#bg .content .login .a1, #bg .content .login .a2{right:165px;}
+#bg .content .login .onError,#bg .content .login .onFocus,#bg .content .login .onShow{line-height:30px;}
+#bg .content .login .captcha{margin: 5px 0 0 15px; float:left;}
+.mt8{margin-top:8px;margin-left:10px;}
+#bg .content .login .relative .top5{top:5px; right:87px;}
+#bg .content .login .input1, #bg .content .login .input3{line-height:18px;}
+#bg .content .login li.p5 .fl{cursor:pointer; _cursor:hand;}
+#bg .content .login .onCorrect{line-height:30px;}

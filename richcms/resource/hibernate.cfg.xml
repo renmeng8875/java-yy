@@ -1,0 +1,54 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+		<!--  
+		<property name="hibernate.connection.url">jdbc:mysql://localhost/richcms</property>
+		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="hibernate.connection.username">root</property>
+		<property name="hibernate.connection.password">123456</property>
+		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+		-->
+		
+		<property name="hibernate.connection.url">jdbc:oracle:thin:@192.168.19.141:1521:mmorcl</property>
+		<property name="hibernate.connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
+		<property name="hibernate.connection.username">richcms</property>
+		<property name="hibernate.connection.password">richcms</property>
+		<property name="default_schema">richcms</property>
+		<property name="hibernate.dialect">org.hibernate.dialect.OracleDialect</property>
+		
+		
+		<property name="hibernate.show_sql">true</property>
+		<property name="hibernate.format_sql">true</property>
+		<property name="hibernate.cache.use_second_level_cache">true</property>
+		<property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
+		
+		
+		<!--  
+		<property name="hibernate.proxool.pool_alias">pool1</property>   
+        <property name="hibernate.connection.provider_class">org.hibernate.connection.ProxoolConnectionProvider</property>
+		<property name="hibernate.proxool.xml">proxool.cfg.xml</property>
+		
+		
+		<mapping resource="com/richinfo/privilege/entity/Privilege.hbm.xml"/>
+		
+		-->
+		
+		
+		
+<!--		
+		<mapping class="com.richinfo.privilege.entity.CatPrivilege"/>
+		<mapping class="com.richinfo.privilege.entity.Menu"/>
+		<mapping class="com.richinfo.privilege.entity.Privilege"/>
+		<mapping class="com.richinfo.privilege.entity.Role"/>
+		<mapping class="com.richinfo.privilege.entity.User"/>
+		<mapping class="com.richinfo.openapi.entity.Account"/>
+		<mapping class="com.richinfo.openapi.entity.FunManage"/>
+		<mapping class="com.richinfo.openapi.entity.AppRole"/>
+		<mapping class="com.richinfo.openapi.entity.SysPrivilegeOfRole"/>
+-->
+		<mapping class="com.richinfo.openapi.entity.CatPrivilegeOfRole"/>
+	</session-factory>
+</hibernate-configuration>

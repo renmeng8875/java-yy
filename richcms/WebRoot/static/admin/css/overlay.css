@@ -1,0 +1,26 @@
+.apple_overlay{
+background-image: none; 
+background:#FFFFFF; 
+position: fixed; 
+z-index: auto; 
+top: 40%; 
+left: 40%; 
+display: none;
+height:350px;
+width:450px;
+
+box-shadow: 0 7px 15px rgba(0, 0, 0, 0.5);/*阴影*/
+border-radius: 5px 5px 5px 5px;/*圆角*/
+-moz-border-radius: 5px 5px 5px 5px;/*圆角*/
+-webkit-border-radius: 5px 5px 5px 5px;/*圆角*/
+}
+.apple_overlay .close {
+    background-image:url(../images/closeoverlay.png);
+    position:absolute; right:5px; top:5px;
+    cursor:pointer;
+    height:35px;
+    width:35px;
+    position: absolute;
+    right: -15px;
+    top: -15px;	
+}

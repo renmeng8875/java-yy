@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<appender name="Console" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"	value="%-d{yyyy-MM-dd HH:mm:ss}-[%p]-(%C:%L)-%m%n" />
+		</layout>
+	</appender>
+
+	<appender name="operationLog" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${catalina.home}/logs/richcms/operation.log" /><!-- 设置File参数：日志输出文件名 -->
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss}-[%p]-(%C:%L)-%m%n" /><!-- 设置输出文件项目和格式 -->
+		</layout>
+	</appender>	
+	
+	<appender name="exceptionLog" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${catalina.home}/logs/richcms/exception.log" /><!-- 设置File参数：日志输出文件名 -->
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss}-[%p]-(%C:%L)-%m%n" /><!-- 设置输出文件项目和格式 -->
+		</layout>
+	</appender>	
+	
+	<appender name="montiorLog" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${catalina.home}/logs/richcms/montior.log" /><!-- 设置File参数：日志输出文件名 -->
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss}-[%p]-(%C:%L)-%m%n" /><!-- 设置输出文件项目和格式 -->
+		</layout>
+	</appender>	
+	
+	<appender name="accessLog" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${catalina.home}/logs/richcms/access.log" /><!-- 设置File参数：日志输出文件名 -->
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss}-[%p]-(%C:%L)-%m%n" /><!-- 设置输出文件项目和格式 -->
+		</layout>
+	</appender>	
+
+		
+	<root>
+		<priority value="info" />		
+		<appender-ref ref="Console" />	
+	</root>
+	
+	<logger name="operationLog" additivity="false">	   
+	   <appender-ref ref="operationLog" />
+	   <appender-ref ref="Console" />
+	</logger>
+	
+	<logger name="exceptionLog" additivity="false">	   
+	   <appender-ref ref="exceptionLog" />
+	   <appender-ref ref="Console" />
+	</logger>
+	
+	<logger name="montiorLog" additivity="false">	   
+	   <appender-ref ref="montiorLog" />
+	   <appender-ref ref="Console" />
+	</logger>
+	
+	<logger name="accessLog" additivity="false">	   
+	   <appender-ref ref="accessLog" />
+	   <appender-ref ref="Console" />
+	</logger>
+	
+	<!--打印hibernate语句执行参数，只在控制台显示不记录日志  -->
+	<!--  
+	<logger name="org.hibernate.type">
+    	<level value="trace"/>
+	</logger>
+	-->
+	
+</log4j:configuration>

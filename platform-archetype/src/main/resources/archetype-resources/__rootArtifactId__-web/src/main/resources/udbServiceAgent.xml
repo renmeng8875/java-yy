@@ -1,0 +1,16 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<!--udb service agent列表-->
+<entry key="udbServiceAgent">
+115.238.171.140:12300
+115.238.171.140:12301
+<!--
+183.136.136.135:12301
+183.136.136.135:12300
+ -->
+</entry>
+</properties>

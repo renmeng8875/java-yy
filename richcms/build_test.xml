@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="richcms" basedir="." default="publish" >
+	
+	<property environment="env"></property>
+	<property name="catalina.lib" location="${env.CATALINA_HOME}/lib"></property>
+	<property name="build" location="${basedir}/build"></property>
+	<property name="build.dir" location="${build}/richcms/richcms/"/>
+	<property name="build.classes" location="${build}/richcms/richcms/WEB-INF/classes"/>
+	<property name="build.src" location="${build}/src"></property>
+	<property name="build.resource" location="${basedir}/resource"></property>
+	<property name="build.resource.test" location="${basedir}/resource/test"></property>
+	<property name="build.doc" location="${build}/doc"></property>
+	
+	<target name="clean">
+		<delete dir="${build}"/>
+	</target>
+
+	<target name="init" depends="clean">
+		<mkdir dir="${build}"/>
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${build.src}"/>
+		<mkdir dir="${build.doc}"/>
+	</target>
+	
+	
+	<target name="prearewebapp" depends="init">
+		<copy todir="${build.dir}">
+			<fileset dir="WebRoot/">
+				<exclude name="**/servlet*.jar"/>
+			</fileset>
+		</copy>
+		<delete dir="${build.classes}"/>
+		<mkdir dir="${build.classes}"/>	
+	</target>
+	
+	<path id="classPath">
+		<fileset dir="${build}/richcms/richcms/WEB-INF/lib">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${catalina.lib}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	
+	<target name="packsrc" depends="prearewebapp">
+		<copy todir="${build.src}">
+			<fileset dir="src" >
+			    <exclude name="**/*.svn"/>
+			</fileset>
+			<fileset dir="resource">
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="compile" depends="packsrc" >
+		<javac  srcdir="${build.src}" destdir="${build.classes}" failonerror="true" encoding="utf-8" debug="on">
+			<classpath refid="classPath">
+			</classpath>
+		</javac>
+		<copy todir="${build.classes}">
+			<fileset dir="${build.resource}">
+				<include name="*.*"/>
+				<exclude name="systemGlobal.xml"/>
+				<exclude name="resources.properties"/>
+		    </fileset>
+	    </copy>
+		<copy todir="${build.classes}">
+			<fileset dir="${build.resource.test}">
+			</fileset>
+		</copy>
+	</target>
+		
+	
+	
+	<target name="zipdir" depends="compile">
+		<zip basedir="${build}/richcms" destfile="${build}/richcms-test.zip" encoding="UTF-8">
+		</zip>
+	</target>
+	
+	<target name="doc" depends="zipdir">
+		<javadoc sourcepath="${build.src}" private="true" windowtitle="richcms.doc createBy renm"
+				 use="true"
+				 packagenames="com.richinfo.*" destdir="${build.doc}"
+				 charset="UTF-8" docencoding="UTF-8" encoding="UTF-8">	
+			<classpath path="${build.classes}"></classpath>
+		</javadoc>
+	</target>
+	
+    <target name="gc" depends="doc">
+        <delete dir="${build}/richcms"></delete>
+    </target>
+
+	<target name="publish" depends="gc">
+			<echo>compile and publish richcms project success!!</echo>
+    </target>
+
+</project>
+

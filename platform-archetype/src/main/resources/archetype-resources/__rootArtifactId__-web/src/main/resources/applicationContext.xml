@@ -1,0 +1,61 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd
+        http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd"
+       default-lazy-init="false">
+
+    <description>Spring公共配置</description>
+
+    <context:property-placeholder ignore-resource-not-found="true"
+                                  location="classpath*:/application.properties"/>
+    <!-- 使用annotation 自动注册bean, 并保证@Required、@Autowired的属性被注入 -->
+    <context:component-scan base-package="${groupId}">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!-- JSR303 Validator定义 -->
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
+
+    <!--ent-->
+    <bean class="com.yy.ent.platform.core.service.ent.UdbEnv">
+        <property name="configPath" value="classpath:udb.properties"/>
+    </bean>
+    <bean class="com.yy.ent.platform.core.service.ent.UdbServiceAgentHalbServiceFactoryBean">
+        <property name="strategy">
+            <util:constant static-field="com.yy.ent.commons.halbproxy.HALBProxy${symbol_dollar}Strategy.DEFAULT"/>
+        </property>
+        <property name="period" value="30000"/>
+        <property name="cfgPath" value="classpath:udbServiceAgent.xml"/>
+        <property name="accessPolicy" value="3"/>
+        <property name="countInterval" value="60000"/>
+    </bean>
+    <bean class="com.yy.ent.platform.core.service.ent.WebdbHalbServiceFactoryBean">
+        <property name="strategy">
+            <util:constant static-field="com.yy.ent.commons.halbproxy.HALBProxy${symbol_dollar}Strategy.DEFAULT"/>
+        </property>
+        <property name="period" value="600000"/>
+        <property name="dbConfigPath" value="classpath:external.xml"/>
+        <property name="accessPolicy" value="20"/>
+    </bean>
+    <bean class="com.yy.ent.platform.core.service.ent.Bs2Service">
+        <property name="filePath" value="classpath:bs2.xml"/>
+    </bean>
+
+    <bean class="com.yy.ent.platform.core.service.ent.HtmlizedFactoryBean">
+        <property name="configPath" value="classpath:htmlized.xml"/>
+    </bean>
+</beans>

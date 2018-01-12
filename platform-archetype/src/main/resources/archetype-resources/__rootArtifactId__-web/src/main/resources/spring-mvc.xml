@@ -1,0 +1,88 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd"
+        >
+
+    <!--aop-->
+    <bean id="permissionsAspect" class="${package}.web.interceptor.PermissionsAspect"/>
+    <aop:config proxy-target-class="true">
+        <aop:aspect ref="permissionsAspect">
+            <aop:pointcut id="controller"
+                          expression="within(@org.springframework.stereotype.Controller *) and @annotation(${package}.web.interceptor.Permissions)"/>
+            <aop:around pointcut-ref="controller" method="aroundInterceptor"/>
+        </aop:aspect>
+    </aop:config>
+    <!-- 自动扫描且只扫描@Controller -->
+    <context:component-scan base-package="${package}.web.controller,com.yy.ent.platform.core.web.controller" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    <!-- 多视图处理,目前只处理了json -->
+    <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager">
+        <mvc:message-converters register-defaults="true">
+            <!-- 将StringHttpMessageConverter的默认编码设为UTF-8 -->
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="UTF-8"/>
+                <property name="writeAcceptCharset" value="false"/>
+            </bean>
+            <!-- JSON处理 -->
+            <bean class="com.yy.ent.platform.core.web.spring.JsonHttpMessageConverter">
+                <property name="supportedMediaTypes" value="application/json"/>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <!-- 定义JSP文件的位置 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!-- REST中根据URL后缀自动判定Content-Type及相应的View,只开XXX.json后缀形式,简化统一处理异常逻辑 -->
+    <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <property name="ignoreAcceptHeader" value="true"/>
+        <property name="defaultContentType" value="text/html"/>
+        <property name="favorPathExtension" value="true"/>
+        <property name="favorParameter" value="false"/>
+        <property name="mediaTypes">
+            <value>
+                json=application/json
+                xml=application/xml
+                *=*/*
+            </value>
+        </property>
+    </bean>
+
+    <!-- 容器默认的DefaultServletHandler处理 所有静态内容与无RequestMapping处理的URL-->
+    <mvc:default-servlet-handler/>
+
+    <!-- 定义首页直接映射 -->
+    <mvc:view-controller path="/" view-name="redirect:/index"/>
+    <!-- 统一处理异常 -->
+    <bean id="exceptionHandler" class="com.yy.ent.platform.core.web.spring.HandlerExceptionResolverImpl"/>
+
+    <!--文件上传-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8"></property>
+        <property name="maxUploadSize" value="10485760000"></property>
+        <property name="maxInMemorySize" value="40960"></property>
+    </bean>
+
+    <!-- 消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 -->
+    <dubbo:application name="dubbo-${parentArtifactId}-client" logger="slf4j"/>
+    <!-- 注册中心暴露发现服务地址 -->
+    <dubbo:registry address="${symbol_dollar}{dubbo.registry.address}"/>
+    <dubbo:monitor protocol="registry"/>
+    <dubbo:annotation package="${package}.web.controller"/>
+</beans>

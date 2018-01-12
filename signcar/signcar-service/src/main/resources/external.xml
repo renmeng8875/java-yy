@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>所有external需要的值,key名称不能变</comment>
+    <entry key="rds_master_server">121.9.240.12:5555</entry>
+    <entry key="rds_slave_server"></entry>
+    <entry key="rds_maxActive">200</entry>
+    <entry key="rds_minIdle">20</entry>
+    <entry key="rds_maxIdle">100</entry>
+    <entry key="rds_maxWait">1000</entry>
+    <entry key="rds_timeout">5000</entry>
+
+    <!-- webdb proxy列表 -->
+    <entry key="webdbProxy">
+        101.226.20.168:8090
+        101.226.20.169:8090
+    </entry>
+
+    <!-- 顶级频道在线人数 -->
+    <entry key="cul_redis">
+        58.215.46.59:26379
+        114.111.163.30:26379
+        183.61.143.68:26379
+    </entry>
+
+    <!-- 子频道在线人数 -->
+    <entry key="cul_sub_redis">
+        58.215.46.59:26380
+        114.111.163.30:26380
+        183.61.143.68:26380
+    </entry>
+
+    <!-- ent porxy列表 -->
+    <!-- 121.9.240.12:5900 (test) -->
+    <!--121.9.221.192:3770-->
+    <!--183.60.218.218.60.98.33:3770-->
+<entry key="entProxy">
+116.31.121.122:3770
+</entry>
+</properties>

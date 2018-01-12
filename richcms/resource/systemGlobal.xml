@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<module name="ipModule">
+		<property name="whiteList" value="-1"/>
+	</module>
+	
+	<module name="fileupload">
+		<property name="pk" value="/upload/warcraft/"/>
+		<property name="default" value="default/" />
+		<property name="catmanager" value="uploadpath/catimagepath/"/>
+		<property name="stylePath" value="Tpl"/>
+		<property name="fridendsLink" value="uploadpath/friendslink/"/>
+		<property name="android" value="android/"/>
+		<property name="ios" value="ios/"/>
+		<property name="news" value="default/news/"/>
+		<property name="ad" value="default/guangdao/"/>
+		
+		<property name="savePath" value="D:/tomcat7/apache-tomcat-7.0.52/webapps/richcms/upload/" />
+		<property name="contextPath" value="/upload/" />
+<!--		<property name="prefix" value="http://i1.mm-img.com/"/>-->
+		<property name="prefix" value="http://localhost:8080/richcms/upload/"/>
+ 
+	</module>  
+	
+	<module name="contentMgt">
+		<property name="frontendDomain" value="http://mm.10086.cn/"/>
+		<property name="fileDir" value="/home/mmport/storage/data/logs/3wmetadata/"/>
+		<property name="filePattern" value="3w_category.{yyyyMMdd}.txt"/>
+	</module>
+    
+    <module name="datasource">
+       <property name="datatype" value="android,ios,ad,news"></property>
+    </module>
+    
+    <module name="authentication">
+    	<property name="excludesUrl" value="stationlettercheckname.do,myinfocheckpwd.do,adminsettingcheckname.do,sysrolecheckname.do,sysconfigcheckname.do,workflowcheckname.do,announcecheckname.do,travelsetcheckname.do,sysstylecheckstyle.do,sysstylecheckstylename.do,linkscheckname.do,developermanagecheckname.do,dataconfigcheckfieldname.do,contentcatstylelist.do,pkcheckname.do,gameplayerscheckname.do,adminindex.do,admindrag.do,admintop.do,adminmenu.do,admingetleftmenu.do,adminmain.do,loginlogout.do"></property>
+    	<property name="superManager" value="超级系统管理员"></property>
+    	<property name="specialUser" value="admin"></property>
+    </module>
+    
+    <module name="mmport">
+    	<!--<property name="logDir" value="/home/mmport/local/tomcat/logs/richcms"></property>-->
+    	<property name="logDir" value="D:/apache-tomcat-7.0.34/logs/richcms"></property>
+    	<property name="serverPosition" value="/home/mmport/local/tomcat"></property>
+    	<property name="developerKey" value="83bfa35c0ef80be4ae06026a7d17e24d"></property>
+    </module>
+    
+    <module name="taskcenter">
+    	<property name="iosFetchPrefix" value="http://localhost/"></property>
+    	<property name="requestUrlPrefix" value="http://localhost:8080/taskcenter/doservice?request="></property>
+    	<property name="requestUrlParam" value='{"classname":"com.mm.taskcenter.model.IosItunes","method":"run","callback":"","validtime":"","parame":["appids:{#}"]}'></property>
+    </module>
+    
+   
+   <module name="watermark">
+        <property name="watermarkImg" value="static/admin/images/watermark/MMlogo80x80.png"></property>
+        <property name="sfyyImg" value="static/admin/images/watermark/sfyy.png"></property>
+   </module>
+    
+   <module name="delConfig">
+       <property name="ulimit" value="20"></property>
+   </module>
+   
+   <module name="report">
+   	 	<property name="savePath" value="/home/mmport/java_webapp/richcms/upload/richcms/" />
+   	 	<property name="prefix" value="/"/>
+   </module> 
+    
+</configuration>

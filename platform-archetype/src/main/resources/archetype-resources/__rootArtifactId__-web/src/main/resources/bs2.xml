@@ -1,0 +1,12 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<!-- 指南:http://wiki.yy.com/index.php/%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8(BS2) -->
+<properties>
+<comment></comment>
+<entry key="bucket_name">agencybig</entry>
+<entry key="ak">ak_sty</entry>
+<entry key="sk">1d98159f0155d4bb75328c472dbbcb1f09afeea8</entry>
+</properties>

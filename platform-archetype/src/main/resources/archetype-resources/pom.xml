@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>platform</artifactId>
+        <groupId>com.yy.ent</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <packaging>pom</packaging>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>${groupId}</groupId>
+    <artifactId>${artifactId}</artifactId>
+    <version>${version}</version>
+
+    <repositories>
+        <repository>
+            <releases>
+            </releases>
+            <id>public</id>
+            <name>Public Repositories</name>
+            <url>http://172.19.101.62:8081/nexus/content/groups/public/</url>
+        </repository>
+        <repository>
+            <releases>
+            </releases>
+            <id>yymz</id>
+            <name>Public Repositories</name>
+            <url>http://172.19.101.62:8081/nexus/content/repositories/yymz/</url>
+        </repository>
+        <repository>
+            <releases>
+            </releases>
+            <id>yyent</id>
+            <name>Public Repositories</name>
+            <url>http://172.19.101.62:8081/nexus/content/repositories/yyent/</url>
+        </repository>
+    </repositories>
+
+    <!-- 配置远程发布到私服，mvn deploy -->
+    <distributionManagement>
+        <repository>
+            <id>yyent-release</id>
+            <name>yyent-release Repository</name>
+            <url>http://172.19.101.62:8081/nexus/content/repositories/yyent-release/</url>
+        </repository>
+        <snapshotRepository>
+            <id>yyent</id>
+            <name>yyent Repository</name>
+            <url>http://172.19.101.62:8081/nexus/content/repositories/yyent/</url>
+        </snapshotRepository>
+    </distributionManagement>
+</project>

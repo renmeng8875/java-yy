@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.4.xsd
+        http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd"
+       default-lazy-init="false">
+
+    <description>Spring公共配置</description>
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="locations">
+            <list>
+                <value>classpath:/application.properties</value>
+                <value>classpath:/special.properties</value>
+            </list>
+        </property>
+    </bean>
+    <!-- 使用annotation 自动注册bean, 并保证@Required、@Autowired的属性被注入 -->
+    <context:component-scan base-package="com.yy.ent.platform.signcar">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!-- MyBatis配置 -->
+    <bean id="connectionInterceptor" class="com.yy.ent.platform.core.mybatis.ConnectionInterceptor"/>
+
+    <!--idol-->
+    <bean id="dataSourceidol" class="com.yy.ent.platform.core.mybatis.RoutingDataSourceFactoryBean">
+        <property name="conf" value="classpath:idoldb.xml"/>
+    </bean>
+    <bean id="dbNameGeneratoridol" class="com.yy.ent.platform.core.mybatis.DbBeanNameGenerator">
+        <property name="dbName" value="idol"/>
+    </bean>
+    <!-- MyBatis配置 -->
+    <bean id="sqlSessionFactoryidol" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSourceidol"/>
+        <!-- 自动扫描entity目录, 省掉Configuration.xml里的手工配置 -->
+        <property name="typeAliasesPackage" value="com.yy.ent.platform.signcar.common.idol.model"/>
+        <!-- 显式指定Mapper文件位置 -->
+        <property name="mapperLocations" value="classpath:/idol/*Mapper.xml"/>
+        <property name="plugins">
+            <ref bean="connectionInterceptor"/>
+        </property>
+    </bean>
+    <!-- 扫描basePackage 接口-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.yy.ent.platform.signcar.repository.idol.mapper"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactoryidol"/>
+        <property name="nameGenerator" ref="dbNameGeneratoridol"/>
+    </bean>
+
+    <!-- JSR303 Validator定义 -->
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
+
+    <!--cache aop-->
+    <bean id="cacheInterceptor" class="com.yy.ent.platform.core.cache.CacheInterceptor">
+        <property name="cacheManager">
+            <bean class="com.yy.ent.platform.core.cache.CacheManager">
+                <property name="defaultCacheName" value="#{redisCache.name}"/>
+                <property name="cachesMap">
+                    <util:map>
+                        <entry key="#{redisCache.name}" value-ref="redisCache"/>
+                    </util:map>
+                </property>
+            </bean>
+        </property>
+    </bean>
+    <bean id="redisCache" class="com.yy.ent.platform.core.cache.RedisCache">
+        <constructor-arg name="name" value="redis"/>
+        <constructor-arg name="prefix" value="signcar_"/>
+        <constructor-arg name="redisTemplate" ref="redisTemplate"/>
+    </bean>
+
+    <bean id="localCacheService" class="com.yy.ent.platform.signcar.service.common.LocalCacheService">
+        <constructor-arg name="configPath" value="classpath:ehcache.xml"/>
+    </bean>
+
+    <aop:config>
+        <aop:aspect ref="cacheInterceptor">
+            <aop:pointcut id="Cacheable" expression="@annotation(com.yy.ent.platform.core.cache.Cacheable) or execution(public * com.yy.ent.platform.signcar.repository..*.mapper..*Mapper..*(..))"/>
+            <aop:around pointcut-ref="Cacheable" method="aroundCacheableInterceptor"/>
+        </aop:aspect>
+        <aop:aspect ref="cacheInterceptor">
+            <aop:pointcut id="CacheEvict" expression="@annotation(com.yy.ent.platform.core.cache.CacheEvict) or execution(public * com.yy.ent.platform.signcar.repository..*.mapper..*Mapper..*(..))"/>
+            <aop:around pointcut-ref="CacheEvict" method="aroundCacheEvictInterceptor"/>
+        </aop:aspect>
+        <aop:aspect ref="cacheInterceptor">
+            <aop:pointcut id="CachePut" expression="@annotation(com.yy.ent.platform.core.cache.CachePut) or execution(public * com.yy.ent.platform.signcar.repository..*.mapper..*Mapper..*(..))"/>
+            <aop:around pointcut-ref="CachePut" method="aroundCachePutInterceptor"/>
+        </aop:aspect>
+    </aop:config>
+
+    <!-- 配置redis 缓存服务器 -->
+    <bean id="redisTemplate" class="com.yy.ent.platform.core.redis.RedisTemplate">
+        <constructor-arg name="jedisPool" ref="jedisPool"/>
+    </bean>
+    <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+        <constructor-arg name="poolConfig" ref="jedisPoolConfig"/>
+        <constructor-arg  name="host" value="${redis.host}"/>
+        <constructor-arg  name="port" value="${redis.port}"/>
+    </bean>
+    <!-- redis pool -->
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="${redis.pool.maxTotal}"/>
+        <property name="maxIdle" value="${redis.pool.maxIdle}"/>
+        <property name="testOnBorrow" value="${redis.pool.testOnBorrow}"/>
+    </bean>
+    <!-- mongo -->
+    <bean id="mongoClient" class="com.yy.ent.platform.modules.mongo.MongoClientBeanFactory">
+        <property name="userName" value="${mongo.username}"/>
+        <property name="password" value="${mongo.password}"/>
+        <property name="database" value="${mongo.dbname}"/>
+        <property name="servers" value="${mongo.servers}"/>
+        <property name="socketTimeout" value="${mongo.socket_time_out}"/>
+        <property name="connectTimeout" value="${mongo.connect_timeout}"/>
+        <property name="connectionsPerHost" value="${mongo.connections_per_host}"/>
+        <property name="maxWaitTime" value="${mongo.max_wait_time}"/>
+    </bean>
+    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongo" ref="mongoClient"/>
+        <constructor-arg name="databaseName" value="${mongo.dbname}"/>
+    </bean>
+    <bean class="com.yy.ent.platform.modules.mongo.MongoClient">
+        <property name="client" ref="mongoClient"/>
+        <property name="databaseName" value="${mongo.dbname}"/>
+    </bean>
+    <!--ent-->
+    <bean id="daemonClientService" class="com.yy.ent.platform.core.service.ent.DaemonClientServiceFactoryBean">
+        <property name="dbConfigPath" value="classpath:daemon.properties"/>
+    </bean>
+    <bean id="daemonClientServiceExt" class="com.yy.ent.platform.core.service.ent.DaemonClientServiceExtFactoryBean">
+        <property name="dbConfigPath" value="classpath:daemon.properties"/>
+    </bean>
+    <bean class="com.yy.ent.platform.core.service.ent.EntProxyHalbServiceFactoryBean"
+          depends-on="daemonClientServiceExt">
+        <property name="strategy">
+            <util:constant static-field="com.yy.ent.commons.halbproxy.HALBProxy$Strategy.RR"/>
+        </property>
+        <property name="period" value="600000"/>
+        <property name="dbConfigPath" value="classpath:external.xml"/>
+        <property name="accessPolicy" value="20"/>
+    </bean>
+    <bean id="yypClientPC" class="com.yy.ent.platform.core.service.ent.YYPNioClientHALBProxyFactoryBean">
+        <property name="strategy">
+            <util:constant static-field="com.yy.ent.commons.halbproxy.HALBProxy$Strategy.RR"/>
+        </property>
+        <property name="period" value="600000"/>
+        <property name="dbConfigPath" value="classpath:halb_entsrv.properties"/>
+        <property name="clientService" ref="daemonClientService"/>
+    </bean>
+    <bean id="yypClientMobile" class="com.yy.ent.platform.core.service.ent.YYPNioClientHALBProxyFactoryBean">
+        <property name="strategy">
+            <util:constant static-field="com.yy.ent.commons.halbproxy.HALBProxy$Strategy.RR"/>
+        </property>
+        <property name="period" value="600000"/>
+        <property name="dbConfigPath" value="classpath:halb_mobsrv.properties"/>
+        <property name="clientService" ref="daemonClientService"/>
+    </bean>
+    <bean id="propmnew" class="com.yy.ent.platform.core.service.ent.YYPClientHALBProxyFactoryBean">
+        <property name="strategy">
+            <util:constant static-field="com.yy.ent.commons.halbproxy.HALBProxy$Strategy.RR"/>
+        </property>
+        <property name="period" value="600000"/>
+        <property name="dbConfigPath" value="classpath:halb_propmnew.properties"/>
+        <property name="clientService" ref="daemonClientService"/>
+    </bean>
+
+    <bean id="srvquery" class="com.yy.ent.platform.core.service.ent.YYPClientHALBProxyFactoryBean">
+        <property name="strategy">
+            <util:constant static-field="com.yy.ent.commons.halbproxy.HALBProxy$Strategy.RR"/>
+        </property>
+        <property name="period" value="600000"/>
+        <property name="dbConfigPath" value="classpath:halb_srvquery.properties"/>
+        <property name="clientService" ref="daemonClientService"/>
+    </bean>
+    
+    <bean id="littleArtist" class="com.yy.ent.platform.core.service.ent.YYPClientHALBProxyFactoryBean">
+        <property name="strategy">
+            <util:constant static-field="com.yy.ent.commons.halbproxy.HALBProxy$Strategy.RR"/>
+        </property>
+        <property name="period" value="600000"/>
+        <property name="dbConfigPath" value="classpath:halb_littleArtist.properties"/>
+        <property name="clientService" ref="daemonClientService"/>
+    </bean>
+
+    <bean id="entSignCar" class="com.yy.ent.platform.core.service.ent.YYPClientHALBProxyFactoryBean">
+        <property name="strategy">
+            <util:constant static-field="com.yy.ent.commons.halbproxy.HALBProxy$Strategy.RR"/>
+        </property>
+        <property name="period" value="600000"/>
+        <property name="dbConfigPath" value="classpath:halb_entSignCar.properties"/>
+        <property name="clientService" ref="daemonClientService"/>
+    </bean>
+
+
+    <bean class="com.yy.ent.platform.core.service.ent.WebdbHalbServiceFactoryBean">
+        <property name="strategy">
+            <util:constant static-field="com.yy.ent.commons.halbproxy.HALBProxy$Strategy.RR"/>
+        </property>
+        <property name="period" value="600000"/>
+        <property name="dbConfigPath" value="classpath:external.xml"/>
+        <property name="accessPolicy" value="20"/>
+    </bean>
+
+    <bean id="metricsService" class="com.yy.ent.platform.core.service.ent.MetricsService">
+        <property name="businessName" value="${metrics.businessName}"/>
+        <property name="environmentName" value="${metrics.environmentName}"/>
+    </bean>
+    <bean class="com.yy.ent.platform.core.spring.SpringHolder"/>
+    <bean class="com.yy.ent.platform.modules.telnet.TelnetService"/>
+</beans>

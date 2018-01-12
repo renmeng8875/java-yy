@@ -1,0 +1,19 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<db>
+    <!-- 测试环境，请大家自行设置 pwd-encrypt="false",默认是true 线上需要设置为true -->
+    <datasource-mapping pwd-encrypt="false">
+        <datasource>
+            <index>0</index>
+            <driver>com.mysql.jdbc.Driver</driver>
+            <url>jdbc:mysql://113.108.231.185:6303/idol</url>
+            <user>yymz</user>
+            <password>duowan</password>
+            <maxActive>100</maxActive>
+            <minIdle>10</minIdle>
+            <maxIdle>50</maxIdle>
+        </datasource>
+    </datasource-mapping>
+</db>

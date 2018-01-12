@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+    <property name="ROOT" value="/data/weblog/java/signcar.service.yy.com"/>
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${ROOT}/log/signcar.service.yy.com.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ROOT}/log/signcar.service.yy.com.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="signFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${ROOT}/log/usersign.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ROOT}/log/usersign.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="recommend" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--
+                <file>${ROOT}/rsync/recommend.log</file>
+        -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ROOT}/rsync/recommend.log.%d{yyyyMMdd}</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="monitor"
+              class="com.yy.ent.clients.appmonitor.logback.AsyncLogCollectAppender">
+        <filter class="com.yy.ent.clients.appmonitor.logback.EntryConditionFilter" />
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+    </appender>
+
+    <logger name="com.yy.ent.platform" level="DEBUG"/>
+    <logger name="com.alibaba.dubbo" level="INFO"/>
+    
+    <logger name="com.yy.ent.external.yyp.MyClientSender" level="WARN" additivity="false">
+    	<appender-ref ref="rollingFile"/>
+    </logger>
+    
+    <logger name="com.yy.ent.external.webdb.impl.WebdbImpl" level="WARN" additivity="false">
+    	<appender-ref ref="rollingFile"/>
+    </logger>
+    
+    <logger name="com.yy.ent.cherrio.codec.AbstractDecoder" level="WARN" additivity="false">
+    	<appender-ref ref="rollingFile"/>
+    </logger>
+    
+
+    <logger name="log.signFile" level="INFO">
+        <appender-ref ref="signFile"/>
+    </logger>
+    <logger name="log.recommend" level="INFO" additivity="false">
+        <appender-ref ref="recommend"/>
+    </logger>
+
+    <root level="ERROR">
+        <appender-ref ref="console"/>
+        <appender-ref ref="rollingFile"/>
+    </root>
+
+
+
+</configuration>

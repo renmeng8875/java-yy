@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cherrio>
+    <server port="16000" max-threads="3000" core-threads="1000" accept-count="5000"/>
+
+    <!--<client ip="127.0.0.1" port="8080" />-->
+    <!--  <client ip="172.19.25.102" port="4150" core-threads="100" max-threads="100"/>-->
+
+    <coder>
+        <encode-class>com.yy.ent.cherrio.yyp.YYPEncoder</encode-class>
+        <decode-class>com.yy.ent.cherrio.yyp.YYPDecoder</decode-class>
+    </coder>
+
+    <packet-class>com.yy.ent.srv.protocol.ClientPacketWrapper</packet-class>
+    <handler-package>
+        <package>com.yy.ent.platform.signcar.service.yyp</package>
+        <package>com.yy.ent.platform.modules.yyp.handler</package>
+    </handler-package>
+
+    <uri-builder>com.yy.ent.srv.builder.SrvURIBuilder</uri-builder>
+
+    <interceptors>
+        <interceptor id="YYPInterceptor"
+                     class="com.yy.ent.platform.signcar.service.yyp.YYPInterceptor"
+                     auto-match="public *(*)"/>
+    </interceptors>
+
+    <namespaces>
+        <!--按包分配命名空间，多个匹配项时，采用目录级别对多的-->
+        <namespace name="/ents/" packages="netty.test.handler"></namespace>
+    </namespaces>
+</cherrio>

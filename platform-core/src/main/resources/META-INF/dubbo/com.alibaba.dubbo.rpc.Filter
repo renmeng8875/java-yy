@@ -1,0 +1,4 @@
+providerFirstFilter=com.yy.ent.platform.core.dubbo.ProviderFirstFilter
+providerLastFilter=com.yy.ent.platform.core.dubbo.ProviderLastFilter
+consumerFirstFilter=com.yy.ent.platform.core.dubbo.ConsumerFirstFilter
+consumerLastFilter=com.yy.ent.platform.core.dubbo.ConsumerLastFilter

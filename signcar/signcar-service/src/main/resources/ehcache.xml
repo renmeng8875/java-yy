@@ -1,0 +1,37 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../config/ehcache.xsd">
+
+    <diskStore path="java.io.tmpdir"/>
+
+ 
+    
+   
+   
+   <cache   name="fast-cache"
+            maxElementsInMemory="100"
+            eternal="false"
+            timeToIdleSeconds="600"
+            timeToLiveSeconds="600"
+            diskPersistent="false"
+            memoryStoreEvictionPolicy="LRU">
+   </cache>
+   
+   <cache   name="mid-cache"
+            maxElementsInMemory="80000"
+            eternal="false"
+            timeToIdleSeconds="1800"
+            timeToLiveSeconds="1800"
+            diskPersistent="false"
+            memoryStoreEvictionPolicy="LRU">
+   </cache>
+   
+   <cache   name="slow-cache"
+            maxElementsInMemory="100"
+            eternal="false"
+            timeToIdleSeconds="3600"
+            timeToLiveSeconds="3600"
+            diskPersistent="false"
+            memoryStoreEvictionPolicy="LRU">
+   </cache>
+    
+    
+</ehcache>
